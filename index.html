@@ -12,18 +12,145 @@
         html, body {
             height: 100%;
             margin: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;      
+        }
+
+        body {
+            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
+        }
+
+        /*Backgrounds*/
+        .intro-bg {
+            position:fixed;
+            inset: 0;
+            background-image: url("images/introBackground.jpg");          
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            z-index: -2;
+            transition: opacity 0.6s ease;
+        }
+
+        .birthday-bg {
+            position: fixed;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            z-index: -2;
+        }
+
+        .birthday-base {
+            position: absolute;
+            inset: 0;
+            background-image: url("images/birthdayBackground.jpg");
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .birthday-collage {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .birthday-collage .img {
+            position: absolute;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .circle {
+            top: 50%;
+            left: 40%;
+            transform-origin: center;
+        }
+
+        .img1 {
+            width:250px;
+            transform: rotate(0deg) translateY(-450px) rotate(0deg);
+        }
+
+        .img2 {
+            width: 250px;
+            transform: rotate(60deg) translateX(-100px) translateY(-550px) rotate(-30deg);
+        }
+
+        .img3 {
+            width: 250px;
+            height: 350px;
+            transform: rotate(120deg) translateX(-150px) translateY(-400px) rotate(-150deg);
+        }
+
+        .img4 {
+            width: 250px;
+            transform: rotate(180deg) translateY(-100px) rotate(-180deg);
+        }
+
+        .img5 {
+            width: 250px;
+            transform: rotate(240deg) translateX(130px) translateY(-350px) rotate(-210deg);
+        }
+
+        .img6 {
+            width: 250px;
+            transform: rotate(300deg) translateX(100px) translateY(-550px) rotate(-325deg);
+        }
+
+        body.celebrate .intro-bg {
+            opacity: 0;
+        }
+
+        body.celebrate .birthday-bg {
+            opacity: 1;
         }
 
         .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .centered {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .message-group {
             text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            transform: translate(-50%, -50%) scale(0.95);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .message-group.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .message-group h1 {
+          margin: 0;
+          font-size: 3.5rem;
+          color: white;
+          text-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        }
+
+        .message-group p {
+          margin-top: 12px;
+          font-size: 1.8rem;
+          font-weight: bold;
+          color: white;
         }
 
         button {
+            z-index: 2;
             font-size: 1.5rem;
             padding: 20px 40px;
             border-radius: 999px;
@@ -35,43 +162,52 @@
             transition: transform 0.1s ease;
         }
 
-        button:active {
-            transform: scale(0.95);
-        }
-
-        h1 {
-            margin-top: 30px;
-            font-size: 3rem;
-            color: white;
+        button.hidden {
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s ease;
-        }
-
-        h1.show {
-            opacity: 1;
-            transform: translateY(0);
+            pointer-events: none;
+            transform: scale(0.9);
         }
     </style>
 </head>
 <body>
+    <div class="intro-bg"></div>
+
+    <div class="birthday-bg">
+        <div class="birthday-base"></div>
+    
+        <div class="birthday-collage">
+            <img src="images/cat1.jpg" class="img circle img1" />
+            <img src="images/cat2.jpg" class="img circle img2" />
+            <img src="images/cat3.jpg" class="img circle img3" />
+            <img src="images/cat4.jpg" class="img circle img4" />
+            <img src="images/cat5.jpg" class="img circle img5" />
+            <img src="images/cat6.jpg" class="img circle img6" />
+        </div>
+    </div>
+
     <div class="container">
-        <button id="celebrateBtn">Click Me!</button>
-        <h1 id="message">Happy Birthday Bev!</h1>
+        <button id="celebrateBtn" class="centered">MREOW!</button>
+        <div id="messageGroup" class="centered message-group">
+            <h1>Happy 24th Birthday Bev!</h1>
+            <p>LEGO Eevee shipping on 2/27 😎😼</p>
+        </div>
     </div>
 
     <script>
         const button = document.getElementById("celebrateBtn");
-        const message = document.getElementById("message");
+        const message = document.getElementById("messageGroup");
 
         button.addEventListener("click", () => {
+
+            button.classList.add("hidden");
+            message.classList.add("show");
+            document.body.classList.add("celebrate");
+
             confetti({
                 particleCount: 150,
                 spread: 70,
                 origin: { y: 0.6 }
             });
-
-            message.classList.add("show");
         });
     </script>
 </body>
